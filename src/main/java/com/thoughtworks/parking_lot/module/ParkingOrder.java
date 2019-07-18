@@ -66,4 +66,5 @@ public class ParkingOrder {
     public void setOrderStatus(boolean orderStatus) {
         this.orderStatus = orderStatus;
     }
+
 }

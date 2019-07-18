@@ -1,7 +1,7 @@
 package com.thoughtworks.parking_lot.service;
 
 import com.thoughtworks.parking_lot.module.ParkingOrder;
-import com.thoughtworks.parking_lot.repository.RecognitionSystemRepository;
+import com.thoughtworks.parking_lot.repository.ParkingOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +12,18 @@ import java.util.UUID;
 public class ParkingOrderService {
 
     @Autowired
-    private RecognitionSystemRepository recognitionSystemRepository;
+    private ParkingOrderRepository parkingOrderRepository;
 
     public ParkingOrder save(ParkingOrder parkingOrder) {
         String orderId = UUID.randomUUID().toString();
         parkingOrder.setId(orderId);
         parkingOrder.setStartTime(new Date());
-        parkingOrder.setOrderStatus(false);
-        return recognitionSystemRepository.save(parkingOrder);
+        parkingOrder.setOrderStatus(true);
+        return parkingOrderRepository.save(parkingOrder);
+    }
+
+    public ParkingOrder updateParkingOrder(ParkingOrder parkingOrder) {
+        parkingOrder.setEndTime(new Date());
+        return parkingOrderRepository.save(parkingOrder);
     }
 }

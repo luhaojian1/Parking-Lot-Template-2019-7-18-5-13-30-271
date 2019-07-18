@@ -20,6 +20,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,9 +38,25 @@ public class ParkingParkingOrderControllerTest {
     @Test
     void should_create_order_form() throws Exception {
 
-        ParkingOrder parkingOrder = createRecognitionSystem("123456","asd123",false );
+        ParkingOrder parkingOrder = createRecognitionSystem("123456","asd123",true);
         when(parkingOrderService.save(any(ParkingOrder.class))).thenReturn(parkingOrder);
         ResultActions resultActions = mvc.perform(post("/orders").contentType(MediaType.APPLICATION_JSON).content("{\n" +
+                "       \"carId\":\"123456\"\n" +
+                "    }"));
+
+        resultActions.andExpect(status().isOk()).andExpect(jsonPath("$.id", is("123456")))
+                .andExpect(jsonPath("$.carId", is("asd123")))
+                .andExpect(jsonPath("$.orderStatus", is(true)))
+                .andExpect(jsonPath("$.parkingLot.name", is("OOIDD")));
+    }
+
+    @Test
+    void should_update_order_form() throws Exception {
+
+        ParkingOrder parkingOrder = createRecognitionSystem("123456","asd123",false);
+        parkingOrder.setEndTime(new Date());
+        when(parkingOrderService.updateParkingOrder(any(ParkingOrder.class))).thenReturn(parkingOrder);
+        ResultActions resultActions = mvc.perform(put("/orders/4561").contentType(MediaType.APPLICATION_JSON).content("{\n" +
                 "       \"carId\":\"123456\"\n" +
                 "    }"));
 
