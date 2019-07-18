@@ -33,4 +33,11 @@ public class ParkingLotService {
         Pageable pageable = new PageRequest(page, pageSize);
         return parkingLotRepository.findAll(pageable);
     }
+
+    public ParkingLot updateParingLot(ParkingLot parkingLot) {
+        if (parkingLot.getCapacity()<0){
+            return null;
+        }
+        return parkingLotRepository.save(parkingLot);
+    }
 }

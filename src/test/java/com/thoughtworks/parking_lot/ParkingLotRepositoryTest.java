@@ -6,11 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @DataJpaTest
@@ -52,5 +54,33 @@ public class ParkingLotRepositoryTest {
 
         assertEquals(parkingLot2.getCapacity(), parkingLot.getCapacity());
         assertNull(parkingLot1);
+    }
+
+    @Test
+    public void should_return_parking_lots_by_pages_and_pageSize(){
+
+        ParkingLotControllerTest parkingLotControllerTest = new ParkingLotControllerTest();
+        parkingLotRepository.save(parkingLotControllerTest.createParkingLot("2222","停车场2",200,"香洲区"));
+        parkingLotRepository.save(parkingLotControllerTest.createParkingLot("1111","停车场1",200,"香洲区"));
+
+        Pageable pageable = new PageRequest(1,15);
+        Page<ParkingLot> parkingLots = parkingLotRepository.findAll(pageable);
+
+        System.out.println(parkingLots.getContent().size());
+        assertEquals(parkingLots.getTotalElements(), 2);
+    }
+
+    @Test
+    public void should_update_parking_lot_capacity(){
+        ParkingLotControllerTest parkingLotControllerTest = new ParkingLotControllerTest();
+        ParkingLot parkingLot = parkingLotControllerTest.createParkingLot("2222","停车场2",200,"香洲区");
+        ParkingLot parkingLot1 = parkingLotRepository.save(parkingLot);
+
+        parkingLot1.setCapacity(1000);
+        parkingLotRepository.save(parkingLot1);
+        ParkingLot targetParingLot = parkingLotRepository.findById("2222").orElse(null);
+
+        assertNotNull(targetParingLot);
+        assertEquals(1000, targetParingLot.getCapacity());
     }
 }
