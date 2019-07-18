@@ -7,8 +7,6 @@ import javax.persistence.*;
 public class ParkingLot {
 
     @Id
-    private String id;
-
     private String name;
 
     private int capacity;
@@ -39,11 +37,4 @@ public class ParkingLot {
         this.location = location;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 }

@@ -20,13 +20,11 @@ public class ParkingLotService {
         if (parkingLot.getCapacity() < 0){
             return null;
         }
-        String id = UUID.randomUUID().toString();
-        parkingLot.setId(id);
         return parkingLotRepository.save(parkingLot);
     }
 
-    public void deleteById(String parkingLotId) {
-        parkingLotRepository.deleteById(parkingLotId);
+    public void deleteByName(String parkingLotName) {
+        parkingLotRepository.deleteById(parkingLotName);
     }
 
     public Page<ParkingLot> findParkingLotsByPageAndPageSize(int page, int pageSize) {

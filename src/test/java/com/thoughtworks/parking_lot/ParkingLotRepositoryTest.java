@@ -28,7 +28,6 @@ public class ParkingLotRepositoryTest {
 
 
         ParkingLot parkingLot = new ParkingLot();
-        parkingLot.setId("1111");
         parkingLot.setName("停车场1");
         parkingLot.setCapacity(200);
         parkingLot.setLocation("南软");
@@ -39,18 +38,17 @@ public class ParkingLotRepositoryTest {
     }
 
     @Test
-    public void should_delete_parking_lot_by_id(){
+    public void should_delete_parking_lot_by_name(){
 
 
         ParkingLot parkingLot = new ParkingLot();
-        parkingLot.setId("1111");
         parkingLot.setName("停车场1");
         parkingLot.setCapacity(200);
         parkingLot.setLocation("南软");
         ParkingLot parkingLot2 = parkingLotRepository.save(parkingLot);
 
-        parkingLotRepository.deleteById(parkingLot.getId());
-        ParkingLot parkingLot1 = parkingLotRepository.findById(parkingLot.getId()).orElse(null);
+        parkingLotRepository.deleteById(parkingLot.getName());
+        ParkingLot parkingLot1 = parkingLotRepository.findById(parkingLot.getName()).orElse(null);
 
         assertEquals(parkingLot2.getCapacity(), parkingLot.getCapacity());
         assertNull(parkingLot1);
@@ -60,8 +58,8 @@ public class ParkingLotRepositoryTest {
     public void should_return_parking_lots_by_pages_and_pageSize(){
 
         ParkingLotControllerTest parkingLotControllerTest = new ParkingLotControllerTest();
-        parkingLotRepository.save(parkingLotControllerTest.createParkingLot("2222","停车场2",200,"香洲区"));
-        parkingLotRepository.save(parkingLotControllerTest.createParkingLot("1111","停车场1",200,"香洲区"));
+        parkingLotRepository.save(parkingLotControllerTest.createParkingLot("停车场2",200,"香洲区"));
+        parkingLotRepository.save(parkingLotControllerTest.createParkingLot("停车场1",200,"香洲区"));
 
         Pageable pageable = new PageRequest(1,15);
         Page<ParkingLot> parkingLots = parkingLotRepository.findAll(pageable);
@@ -73,12 +71,12 @@ public class ParkingLotRepositoryTest {
     @Test
     public void should_update_parking_lot_capacity(){
         ParkingLotControllerTest parkingLotControllerTest = new ParkingLotControllerTest();
-        ParkingLot parkingLot = parkingLotControllerTest.createParkingLot("2222","停车场2",200,"香洲区");
+        ParkingLot parkingLot = parkingLotControllerTest.createParkingLot("停车场2",200,"香洲区");
         ParkingLot parkingLot1 = parkingLotRepository.save(parkingLot);
 
         parkingLot1.setCapacity(1000);
         parkingLotRepository.save(parkingLot1);
-        ParkingLot targetParingLot = parkingLotRepository.findById("2222").orElse(null);
+        ParkingLot targetParingLot = parkingLotRepository.findById("停车场2").orElse(null);
 
         assertNotNull(targetParingLot);
         assertEquals(1000, targetParingLot.getCapacity());

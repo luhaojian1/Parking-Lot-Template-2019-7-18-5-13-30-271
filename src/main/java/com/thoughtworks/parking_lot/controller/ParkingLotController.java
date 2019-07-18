@@ -15,14 +15,14 @@ public class ParkingLotController {
         return parkingLotService.save(parkingLot);
     }
 
-    @DeleteMapping("/parkingLots/{parkingLotId}")
-    public void sellParingLot(@PathVariable String parkingLotId) {
-        parkingLotService.deleteById(parkingLotId);
+    @DeleteMapping("/parkingLots/{parkingLotName}")
+    public void sellParingLot(@PathVariable String parkingLotName) {
+        parkingLotService.deleteByName(parkingLotName);
     }
 
-    @PutMapping("/parkingLots/{parkingLotId}")
-    public ParkingLot increaseParingLotCapacity(@PathVariable String parkingLotId, @RequestBody ParkingLot parkingLot) {
-        parkingLot.setId(parkingLotId);
+    @PutMapping("/parkingLots/{parkingLotName}")
+    public ParkingLot increaseParingLotCapacity(@PathVariable String parkingLotName, @RequestBody ParkingLot parkingLot) {
+        parkingLot.setName(parkingLotName);
         return parkingLotService.updateParingLot(parkingLot);
     }
 

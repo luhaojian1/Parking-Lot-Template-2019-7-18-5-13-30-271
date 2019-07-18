@@ -39,7 +39,7 @@ public class ParkingLotControllerTest {
     @Test
     void should_buy_parking_lot() throws Exception {
 
-        ParkingLot parkingLot = createParkingLot("1111", "OOCL", 200, "香洲区");
+        ParkingLot parkingLot = createParkingLot( "OOCL", 200, "香洲区");
         when(parkingLotService.save(any(ParkingLot.class))).thenReturn(parkingLot);
         ResultActions resultActions = mvc.perform(post("/parkingLots").contentType(MediaType.APPLICATION_JSON).content("{\n" +
                 "       \"location\":\"fdsf\",\n" +
@@ -55,14 +55,13 @@ public class ParkingLotControllerTest {
     @Test
     void should_sell_parking_lot() throws Exception {
 
-        ResultActions resultActions = mvc.perform(delete("/parkingLots/111"));
+        ResultActions resultActions = mvc.perform(delete("/parkingLots/p1"));
         resultActions.andExpect(status().isOk());
-        verify(parkingLotService).deleteById(anyString());
+        verify(parkingLotService).deleteByName(anyString());
     }
 
-    public ParkingLot createParkingLot(String id, String name, int capacity, String location) {
+    public ParkingLot createParkingLot( String name, int capacity, String location) {
         ParkingLot parkingLot = new ParkingLot();
-        parkingLot.setId(id);
         parkingLot.setName(name);
         parkingLot.setCapacity(capacity);
         parkingLot.setLocation(location);
@@ -73,9 +72,9 @@ public class ParkingLotControllerTest {
     void should_return_parking_lots_by_pages_and_pageSize() throws Exception {
 
         List<ParkingLot> parkingLots = new ArrayList<>();
-        parkingLots.add(createParkingLot("1111", "OOCL", 200, "香洲区"));
-        parkingLots.add(createParkingLot("2222", "OOCL", 200, "香洲区"));
-        parkingLots.add(createParkingLot("3333", "OOCL", 200, "香洲区"));
+        parkingLots.add(createParkingLot("OO15L", 200, "香洲区"));
+        parkingLots.add(createParkingLot( "O14L", 200, "香洲区"));
+        parkingLots.add(createParkingLot( "O12L", 200, "香洲区"));
 
         //when(parkingLotService.findParkingLotsByPageAndPageSize(1,15)).thenReturn();
         ResultActions resultActions = mvc.perform(post("/parkingLots").contentType(MediaType.APPLICATION_JSON).content("{\n" +
@@ -91,7 +90,7 @@ public class ParkingLotControllerTest {
 
     @Test
     void should_increase_parking_lot_capacity() throws Exception {
-        ParkingLot parkingLot = createParkingLot("1111", "OOCL", 200, "香洲区");
+        ParkingLot parkingLot = createParkingLot("OOCL", 200, "香洲区");
         when(parkingLotService.updateParingLot(any(ParkingLot.class))).thenReturn(parkingLot);
         ResultActions resultActions = mvc.perform(put("/parkingLots/1111").contentType(MediaType.APPLICATION_JSON)
                 .content("{\n" +
