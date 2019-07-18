@@ -59,8 +59,8 @@ public class ParkingLotControllerTest {
     public void should_sell_parking_lot() throws Exception {
 
 
-         mvc.perform(delete("/parkinglots/111"));
-
+        ResultActions resultActions = mvc.perform(delete("/parkinglots/111"));
+        resultActions.andExpect(status().isOk());
         verify(parkingLotService).deleteById(anyString());
     }
 
