@@ -8,10 +8,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -68,4 +72,25 @@ public class ParkingLotControllerTest {
         parkingLot.setLocation(location);
         return parkingLot;
     }
+
+    @Test
+    public void should_show_15_parking_lots_by_pages_and_pageSize() throws Exception {
+
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        parkingLots.add (createParkingLot("1111", "OOCL", 200, "香洲区"));
+        parkingLots.add (createParkingLot("2222", "OOCL", 200, "香洲区"));
+        parkingLots.add (createParkingLot("3333", "OOCL", 200, "香洲区"));
+
+        //when(parkingLotService.findParkingLotsByPageAndPageSize(1,15)).thenReturn();
+        ResultActions resultActions = mvc.perform(post("/parkinglots").contentType(MediaType.APPLICATION_JSON).content("{\n" +
+                "       \"location\":\"fdsf\",\n" +
+                "       \"name\":\"fsdf\"\n" +
+                "       \"capacity\":200\n" +
+                "    }"));
+
+        resultActions.andExpect(status().isOk()).andExpect(jsonPath("$.name" , is("OOCL")))
+                .andExpect(jsonPath("$.capacity", is(200)))
+                .andExpect(jsonPath("$.location", is("香洲区")));
+    }
+
 }
