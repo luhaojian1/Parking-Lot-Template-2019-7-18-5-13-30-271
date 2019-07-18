@@ -1,0 +1,23 @@
+---
+# Form running gradle locally
+spring:
+  profiles:
+    active: local
+  h2:
+    console:
+      path: /h2
+      enabled: true
+  datasource:
+    url: jdbc:h2:file:./h2/testdb
+    driverClassName: org.h2.Driver
+    database-platform: org.hibernate.dialect.H2Dialect
+    usename: sa
+    password:
+  flyway:
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    generate-ddl: true
+server:
+  port: 8090
