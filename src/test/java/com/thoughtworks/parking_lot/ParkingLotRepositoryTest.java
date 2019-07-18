@@ -10,6 +10,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 @DataJpaTest
@@ -33,5 +34,23 @@ public class ParkingLotRepositoryTest {
         ParkingLot targetParkingLot = parkingLotRepository.save(parkingLot);
 
         assertEquals("停车场1",targetParkingLot.getName());
+    }
+
+    @Test
+    public void should_delete_parking_lot_by_id(){
+
+
+        ParkingLot parkingLot = new ParkingLot();
+        parkingLot.setId("1111");
+        parkingLot.setName("停车场1");
+        parkingLot.setCapacity(200);
+        parkingLot.setLocation("南软");
+        ParkingLot parkingLot2 = parkingLotRepository.save(parkingLot);
+
+        parkingLotRepository.deleteById(parkingLot.getId());
+        ParkingLot parkingLot1 = parkingLotRepository.findById(parkingLot.getId()).orElse(null);
+
+        assertEquals(parkingLot2.getCapacity(), parkingLot.getCapacity());
+        assertNull(parkingLot1);
     }
 }

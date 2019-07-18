@@ -20,4 +20,8 @@ public class ParkingLotService {
         parkingLot.setId(id);
         return parkingLotRepository.save(parkingLot);
     }
+
+    public void deleteById(String parkingLotId) {
+        parkingLotRepository.deleteById(parkingLotId);
+    }
 }

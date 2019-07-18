@@ -15,7 +15,10 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -46,6 +49,15 @@ public class ParkingLotControllerTest {
         resultActions.andExpect(status().isOk()).andExpect(jsonPath("$.name" , is("OOCL")))
                 .andExpect(jsonPath("$.capacity", is(200)))
                 .andExpect(jsonPath("$.location", is("香洲区")));
+    }
+
+    @Test
+    public void should_sell_parking_lot() throws Exception {
+
+
+         mvc.perform(delete("/parkinglots/111"));
+
+        verify(parkingLotService).deleteById(anyString());
     }
 
     public ParkingLot createParkingLot(String id, String name, int capacity, String location){
