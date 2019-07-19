@@ -57,21 +57,19 @@ public class ParkingLotRepositoryTest {
     @Test
     public void should_return_parking_lots_by_pages_and_pageSize(){
 
-        ParkingLotControllerTest parkingLotControllerTest = new ParkingLotControllerTest();
-        parkingLotRepository.save(parkingLotControllerTest.createParkingLot("停车场2",200,"香洲区"));
-        parkingLotRepository.save(parkingLotControllerTest.createParkingLot("停车场1",200,"香洲区"));
+        parkingLotRepository.save(createParkingLot("停车场2",200,"香洲区"));
+        parkingLotRepository.save(createParkingLot("停车场1",200,"香洲区"));
 
-        Pageable pageable = new PageRequest(1,15);
+        Pageable pageable = PageRequest.of(1,15);
         Page<ParkingLot> parkingLots = parkingLotRepository.findAll(pageable);
 
-        System.out.println(parkingLots.getContent().size());
         assertEquals(parkingLots.getTotalElements(), 2);
     }
 
     @Test
     public void should_update_parking_lot_capacity(){
-        ParkingLotControllerTest parkingLotControllerTest = new ParkingLotControllerTest();
-        ParkingLot parkingLot = parkingLotControllerTest.createParkingLot("停车场2",200,"香洲区");
+
+        ParkingLot parkingLot = createParkingLot("停车场2",200,"香洲区");
         ParkingLot parkingLot1 = parkingLotRepository.save(parkingLot);
 
         parkingLot1.setCapacity(1000);
@@ -80,5 +78,13 @@ public class ParkingLotRepositoryTest {
 
         assertNotNull(targetParingLot);
         assertEquals(1000, targetParingLot.getCapacity());
+    }
+
+    public ParkingLot createParkingLot( String name, int capacity, String location) {
+        ParkingLot parkingLot = new ParkingLot();
+        parkingLot.setName(name);
+        parkingLot.setCapacity(capacity);
+        parkingLot.setLocation(location);
+        return parkingLot;
     }
 }

@@ -20,6 +20,11 @@ public class ParkingLotController {
         parkingLotService.deleteByName(parkingLotName);
     }
 
+    @GetMapping(value = "/parkingLots" , params = ("page"))
+    public void findAllByPages(@RequestParam int page, @RequestParam (defaultValue = "15", required = false)int pageSize) {
+        parkingLotService.findParkingLotsByPageAndPageSize(page, pageSize);
+    }
+
     @PutMapping("/parkingLots/{parkingLotName}")
     public ParkingLot increaseParingLotCapacity(@PathVariable String parkingLotName, @RequestBody ParkingLot parkingLot) {
         parkingLot.setName(parkingLotName);

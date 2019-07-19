@@ -22,6 +22,7 @@ public class ParkingOrderService {
     public ParkingOrder save(ParkingOrder parkingOrder) {
         ParkingLot parkingLot = parkingOrder.getParkingLot();
         int usedPositionNumber = findUsedParkingOrderNumberByParkingLot(parkingLot);
+
         if (usedPositionNumber >= parkingLot.getCapacity()){
             throw new NotEnoughPositionExpection();
         }

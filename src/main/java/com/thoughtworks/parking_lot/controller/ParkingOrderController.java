@@ -17,13 +17,13 @@ public class ParkingOrderController {
 
     @PostMapping("/orders")
     public ResponseEntity<ParkingOrder> createOrders(@RequestBody ParkingOrder parkingOrder) {
-        try {
+
             ParkingOrder parkingOrder1 = parkingOrderService.save(parkingOrder);
-            return new ResponseEntity<>(parkingOrder1, HttpStatus.OK);
-        } catch (NotEnoughPositionExpection e) {
-            System.err.print("停车场已经满");
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+            if (parkingOrder1 != null){
+                return new ResponseEntity<>(parkingOrder1, HttpStatus.OK);
+            }
+            return ResponseEntity.badRequest().build();
+
     }
 
     @PutMapping("/orders/{orderId}")

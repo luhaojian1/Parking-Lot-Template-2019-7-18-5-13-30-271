@@ -10,7 +10,7 @@ public class ParkingOrder {
     @Id
     private String id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "parking_lot_name")
     private ParkingLot parkingLot;
 
